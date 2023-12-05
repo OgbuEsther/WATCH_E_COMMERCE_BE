@@ -17,7 +17,6 @@ const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
 const multer_1 = require("../utils/multer");
-const payWithFlutter_1 = require("./payWithFlutter");
 const flutterwave_node_v3_1 = __importDefault(require("flutterwave-node-v3"));
 const axios_1 = __importDefault(require("axios"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -36,7 +35,7 @@ router.post("/new-product", multer_1.uploadProducConfig, (req, res) => __awaiter
                 quantity,
                 status: true,
                 desc,
-                category
+                category,
             });
             yield (getCatName === null || getCatName === void 0 ? void 0 : getCatName.products.push(new mongoose_1.default.Types.ObjectId(products === null || products === void 0 ? void 0 : products._id)));
             yield (getCatName === null || getCatName === void 0 ? void 0 : getCatName.save());
@@ -62,7 +61,7 @@ router.post("/new-product", multer_1.uploadProducConfig, (req, res) => __awaiter
         return res.status(400).json({
             message: "unable to create product",
             data: error,
-            errMsg: error.message
+            errMsg: error.message,
         });
     }
 }));
@@ -83,7 +82,7 @@ router.patch("/purchase/:productID", (req, res) => __awaiter(void 0, void 0, voi
             return res.status(200).json({
                 message: "added to cart",
                 data: qty,
-                result: (getProducts === null || getProducts === void 0 ? void 0 : getProducts.quantity) - qty
+                result: (getProducts === null || getProducts === void 0 ? void 0 : getProducts.quantity) - qty,
             });
         }
     }
@@ -122,7 +121,6 @@ router.get("/allproducts/:id", (req, res) => __awaiter(void 0, void 0, void 0, f
         });
     }
 }));
-router.post("/payOut", payWithFlutter_1.payOut);
 // router.post("/payOut" , makePayment)
 router.post("/payment-callback", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -150,7 +148,9 @@ router.post("/payment-callback", (req, res) => __awaiter(void 0, void 0, void 0,
                     logo: "http://www.piedpiper.com/app/themes/joystick-v27/images/logo.png",
                 },
             },
-        });
+        }
+        // console.log("this is first reponse" , response)
+        );
         if (req.query.status === "successful") {
             // const transactionDetails = await Transaction.find({ref: req.query.tx_ref});
             const response = yield flutterwave_node_v3_1.default.Transaction.verify({
@@ -162,7 +162,7 @@ router.post("/payment-callback", (req, res) => __awaiter(void 0, void 0, void 0,
                 // Success! Confirm the customer's payment
                 return res.status(200).json({
                     message: "Successfull",
-                    data: response
+                    data: response,
                 });
             }
             else {

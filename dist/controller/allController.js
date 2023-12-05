@@ -74,7 +74,7 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
 }));
 router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email } = req.body;
+        const { email, password } = req.body;
         const checkUser = yield UserModel_1.default.findOne({ email: email });
         if (checkUser) {
             return res.status(200).json({

@@ -1,4 +1,3 @@
-
 import productModels from "../models/productModels";
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
@@ -66,7 +65,7 @@ router.post("/register", async (req: Request, res: Response) => {
 
 router.post("/login", async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body;
 
     const checkUser = await UserModel.findOne({ email: email });
 
@@ -91,13 +90,14 @@ router.post("/login", async (req: Request, res: Response) => {
 
 router.post("/createProduct", async (req: Request, res: Response) => {
   try {
-    const { title, desc, price, uploadProducConfig, quantity, status } = req.body;
+    const { title, desc, price, uploadProducConfig, quantity, status } =
+      req.body;
     const imgUploader = await cloudinary.uploader.upload(req?.file!.path);
     const creating = await productModels.create({
       title,
       desc,
       price,
-      uploadProducConfig :imgUploader?.secure_url,
+      uploadProducConfig: imgUploader?.secure_url,
       quantity,
       status: true,
     });
