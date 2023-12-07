@@ -53,7 +53,7 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
             name,
             email,
             password,
-            phoneNum
+            phoneNum,
         });
         return res.status(200).json({
             message: "Success",
@@ -69,7 +69,7 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
 //login user
 router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email } = req.body;
+        const { email, password } = req.body;
         const loginUser = yield UserModel_1.default.findOne({ email });
         if (loginUser) {
             return res.status(200).json({

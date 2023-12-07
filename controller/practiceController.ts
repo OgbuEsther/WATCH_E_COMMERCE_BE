@@ -1,10 +1,9 @@
-
 import productModels from "../models/productModels";
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import UserModel from "../models/UserModel";
- const router = express.Router();
+const router = express.Router();
 
 //get all users
 router.get("/", async (req: Request, res: Response) => {
@@ -41,13 +40,13 @@ router.get("/:userID", async (req: Request, res: Response) => {
 
 router.post("/register", async (req: Request, res: Response) => {
   try {
-    const { name, email, password ,phoneNum } = req.body;
+    const { name, email, password, phoneNum } = req.body;
 
     const user = await UserModel.create({
       name,
       email,
       password,
-      phoneNum
+      phoneNum,
     });
 
     return res.status(200).json({
@@ -64,7 +63,7 @@ router.post("/register", async (req: Request, res: Response) => {
 //login user
 router.post("/login", async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body;
 
     const loginUser = await UserModel.findOne({ email });
     if (loginUser) {
@@ -84,5 +83,4 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-
-export default router
+export default router;
