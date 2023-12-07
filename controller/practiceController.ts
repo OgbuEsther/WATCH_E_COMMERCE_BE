@@ -64,15 +64,21 @@ router.post("/register", async (req: Request, res: Response) => {
 router.post("/login", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-
     const loginUser = await UserModel.findOne({ email });
+
     if (loginUser) {
-      return res.status(200).json({
-        message: "success",
-        data: loginUser,
-      });
+      if (loginUser?.password === password) {
+        return res.status(200).json({
+          message: "success",
+          data: loginUser,
+        });
+      } else {
+        return res.status(400).json({
+          message: "Wrong password",
+        });
+      }
     } else {
-      return res.status(200).json({
+      return res.status(404).json({
         message: "user not found",
       });
     }

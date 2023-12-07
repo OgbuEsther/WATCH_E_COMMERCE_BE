@@ -72,13 +72,20 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const { email, password } = req.body;
         const loginUser = yield UserModel_1.default.findOne({ email });
         if (loginUser) {
-            return res.status(200).json({
-                message: "success",
-                data: loginUser,
-            });
+            if ((loginUser === null || loginUser === void 0 ? void 0 : loginUser.password) === password) {
+                return res.status(200).json({
+                    message: "success",
+                    data: loginUser,
+                });
+            }
+            else {
+                return res.status(400).json({
+                    message: "Wrong password",
+                });
+            }
         }
         else {
-            return res.status(200).json({
+            return res.status(404).json({
                 message: "user not found",
             });
         }
