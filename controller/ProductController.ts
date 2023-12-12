@@ -16,8 +16,16 @@ router.post(
   uploadProducConfig,
   async (req: Request, res: Response) => {
     try {
-      const { title, price, productImage, quantity, status, desc, category } =
-        req.body;
+      const {
+        title,
+        price,
+        productImage,
+        quantity,
+        status,
+        desc,
+        category,
+        oldPrice,
+      } = req.body;
       const imgUploader = await cloudinary.uploader.upload(req?.file!.path);
       let getCatName = await categoryModel.findOne({ name: category });
       if (getCatName?.name === category) {
@@ -29,6 +37,7 @@ router.post(
           status: true,
           desc,
           category,
+          oldPrice,
         });
 
         await getCatName?.products.push(

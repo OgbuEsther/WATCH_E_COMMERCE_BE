@@ -24,7 +24,7 @@ const categoryModel_1 = __importDefault(require("../models/categoryModel"));
 // create product
 router.post("/new-product", multer_1.uploadProducConfig, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title, price, productImage, quantity, status, desc, category } = req.body;
+        const { title, price, productImage, quantity, status, desc, category, oldPrice, } = req.body;
         const imgUploader = yield cloudinary_1.default.uploader.upload(req === null || req === void 0 ? void 0 : req.file.path);
         let getCatName = yield categoryModel_1.default.findOne({ name: category });
         if ((getCatName === null || getCatName === void 0 ? void 0 : getCatName.name) === category) {
@@ -36,6 +36,7 @@ router.post("/new-product", multer_1.uploadProducConfig, (req, res) => __awaiter
                 status: true,
                 desc,
                 category,
+                oldPrice,
             });
             yield (getCatName === null || getCatName === void 0 ? void 0 : getCatName.products.push(new mongoose_1.default.Types.ObjectId(products === null || products === void 0 ? void 0 : products._id)));
             yield (getCatName === null || getCatName === void 0 ? void 0 : getCatName.save());
